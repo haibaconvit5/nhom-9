@@ -40,4 +40,24 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { login };
+const getProfile = (req, res) => {
+  try {
+    const user = users.find(u => u.id === req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        avatar: user.avatar
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = { login, getProfile };
